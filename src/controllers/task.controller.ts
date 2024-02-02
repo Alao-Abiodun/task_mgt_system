@@ -39,3 +39,24 @@ export const getTask = tryCatch(
         return successResponse(res, 'Task retrieved successfully', tasks);
     }
 );
+
+export const updateTask = tryCatch(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+
+        const task = await taskRepository.findById(id);
+
+        if (!task) {
+            throw new AppError('Task not found', StatusCodes.NOT_FOUND);
+        }
+
+        const { title, description } = req.body;
+
+        const updatedTask = {
+            title,
+            description,
+        };
+        await taskRepository.update(id, updatedTask);
+        return successResponse(res, 'Task updated successfully');
+    }
+);
