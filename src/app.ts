@@ -5,7 +5,7 @@ import cors from 'cors';
 import { errorResponse, successResponse } from './utils/lib/response';
 import { StatusCodes } from 'http-status-codes';
 import AppError from './utils/lib/appError';
-import logger from './services/logger.service';
+// import logger from './services/logger.service';
 
 const app: Application = express();
 
@@ -25,11 +25,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // mount routes
-app.use('/patient/v1', routes);
+app.use('/task/v1', routes);
 
 // index route
-app.get('/patient', (req: Request, res: Response) => {
-    return successResponse(res, 'Welcome to Patient service 🚀');
+app.get('/task', (req: Request, res: Response) => {
+    return successResponse(res, 'Welcome to Task Management service 🚀');
 });
 
 // handle 404 routes
@@ -43,7 +43,7 @@ app.all('*', async (req: Request, res: Response, next: NextFunction) => {
 
 // handle global error
 app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
-    logger.error(error);
+    // logger.error(error);
     const message =
         error.name === 'Error' ? 'Something went wrong' : error.message;
     const statusCode =
