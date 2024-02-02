@@ -60,3 +60,15 @@ export const updateTask = tryCatch(
         return successResponse(res, 'Task updated successfully');
     }
 );
+
+export const deleteTask = tryCatch(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const task = await taskRepository.findById(id);
+        if (!task) {
+            throw new AppError('Task not found', StatusCodes.NOT_FOUND);
+        }
+        await taskRepository.remove(id);
+        return successResponse(res, 'Task deleted successfully');
+    }
+);
