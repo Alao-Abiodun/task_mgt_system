@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
     addTask,
+    deleteTask,
     getSingleTask,
     getTask,
     updateTask,
@@ -12,4 +13,5 @@ export default (router: Router) => {
     router.get('/', getTask);
     router.get('/:id', getSingleTask);
     router.put('/:id', updateTask);
+    router.delete('/:id', deleteTask);
 };
