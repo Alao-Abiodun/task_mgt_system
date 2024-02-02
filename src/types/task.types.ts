@@ -5,3 +5,11 @@ export interface ITask {
     title: string;
     description?: string;
 }
+
+export interface ITaskQuery {
+    id?: Types.ObjectId;
+    title?: string;
+    description?: string;
+    limit?: number;
+    skip?: number;
+}
