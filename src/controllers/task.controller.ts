@@ -21,3 +21,21 @@ export const addTask = tryCatch(
         );
     }
 );
+
+export const getSingleTask = tryCatch(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const task = await taskRepository.findById(id);
+        if (!task) {
+            throw new AppError('Task not found', StatusCodes.NOT_FOUND);
+        }
+        return successResponse(res, 'Task retrieved successfully', task);
+    }
+);
+
+export const getTask = tryCatch(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const tasks = await taskRepository.findAll();
+        return successResponse(res, 'Task retrieved successfully', tasks);
+    }
+);
