@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - "7001:7001"
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - /usr/app/node_modules
+      - .:/usr/app
+
+  mongodb:
+    image: mongo:latest
+    container_name: tmsmongodb
+    ports:
+      - "27001:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: tmsrootpassword
+      MONGO_INITDB_DATABASE: tmsdb
+    volumes:
+      - ./mongodb-init:/docker-entrypoint-initdb.d/mongodb-init.js:ro
+      - mongodbdata:/data/db
+
