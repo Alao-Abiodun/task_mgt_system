@@ -12,6 +12,6 @@ COPY . .
 # build source file
 RUN pnpm run build
 # expose port 3000
-EXPOSE 3000
+EXPOSE 7001
 # start app
 CMD ["pnpm", "run", "start"]

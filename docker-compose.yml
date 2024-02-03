@@ -25,3 +25,16 @@ services:
       - ./mongodb-init:/docker-entrypoint-initdb.d/mongodb-init.js:ro
       - mongodbdata:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: tmsrabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+

@@ -1,4 +1,6 @@
 import 'dotenv/config'; // load env variables
+// import dotenv from 'dotenv';
+// dotenv.config();
 import app from './app';
 // import logger from './services/logger.service';
 import mongoose from 'mongoose';
@@ -23,7 +25,7 @@ try {
     // logger.info('Connection has been established successfully.');
 
     // set app port
-    const port = Number(process.env.PORT) || 6001;
+    const port = Number(process.env.PORT)|| 7001;
     // spin off the server
     app.listen(port, () => {
         console.log(
