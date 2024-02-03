@@ -7,11 +7,12 @@ import {
     updateTask,
 } from '../controllers/task.controller';
 import { addTaskValidator } from '../middlewares/validations/task.validation';
+import { userAuth } from '../middlewares/authorizations/user.authorization';
 
 export default (router: Router) => {
-    router.post('/', addTaskValidator, addTask);
+    router.post('/', userAuth, addTaskValidator, addTask);
     router.get('/', getTask);
     router.get('/:id', getSingleTask);
-    router.put('/:id', updateTask);
-    router.delete('/:id', deleteTask);
+    router.put('/:id', userAuth, updateTask);
+    router.delete('/:id', userAuth, deleteTask);
 };

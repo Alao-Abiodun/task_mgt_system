@@ -25,7 +25,7 @@ try {
     // logger.info('Connection has been established successfully.');
 
     // set app port
-    const port = Number(process.env.PORT)|| 7001;
+    const port = Number(process.env.PORT) || 7001;
     // spin off the server
     app.listen(port, () => {
         console.log(
