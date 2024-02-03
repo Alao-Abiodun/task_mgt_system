@@ -9,12 +9,15 @@ const db = await mongoose.connect(
 );
 if (db) console.log('Connected to Database');
 
-rabbitMQService.connect().then(() => {
-    console.log('Connected to RabbitMQ');
-}).catch((error) => {
-    console.error('Error connecting to RabbitMQ:', error);
-    process.exit(1);
-});
+rabbitMQService
+    .connect()
+    .then(() => {
+        console.log('Connected to RabbitMQ');
+    })
+    .catch((error) => {
+        console.error('Error connecting to RabbitMQ:', error);
+        process.exit(1);
+    });
 
 process.on('SIGINT', async () => {
     await mongoose.connection.close();
