@@ -7,6 +7,7 @@
     "format": "pnpm exec prettier --write \"src/**/*.ts\"",
     "check-format": "pnpm exec prettier --check \"src/**/*.ts\"",
     "dev": "nodemon src/index.ts",
+    "dev:workers": "nodemon src/config/index.ts",
     "build": "sh build.sh",
     "start": "node --es-module-specifier-resolution=node ./dist/index.js"
   },
@@ -15,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@axiomhq/js": "1.0.0-rc.1",
+    "amqplib": "^0.10.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
@@ -28,6 +30,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.4",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
     "@types/mongoose": "^5.11.97",
