@@ -4,15 +4,18 @@ import { StatusCodes } from 'http-status-codes';
 import tryCatch from '../utils/helpers/tryCatch.helper';
 import AppError from '../utils/lib/appError';
 import * as taskRepository from '../repositories/task.controller';
+import produceMessage from '../producers/index';
 
 export const addTask = tryCatch(
     async (req: Request, res: Response, next: NextFunction) => {
         const { title, description } = req.body;
-        const task = {
+        const taskDetails = {
             title,
             description,
         };
-        await taskRepository.create(task);
+        const task = await taskRepository.create(taskDetails);
+        // publish message
+        await produceMessage(task, 'task');
         return successResponse(
             res,
             'Task created successfully',
@@ -57,6 +60,8 @@ export const updateTask = tryCatch(
             description,
         };
         await taskRepository.update(id, updatedTask);
+        // publish message
+        await produceMessage(updatedTask, 'task');
         return successResponse(res, 'Task updated successfully');
     }
 );
@@ -69,6 +74,8 @@ export const deleteTask = tryCatch(
             throw new AppError('Task not found', StatusCodes.NOT_FOUND);
         }
         await taskRepository.remove(id);
+        // publish message
+        await produceMessage({ id }, 'task');
         return successResponse(res, 'Task deleted successfully');
     }
 );

@@ -16,3 +16,31 @@ export const webhook = tryCatch(
         return res.status(200).send('OK');
     }
 );
+
+
+// services/webhookService.js
+class WebhookService {
+    protected subscribers: any[];
+    
+    constructor() {
+      this.subscribers = [];
+    }
+  
+    subscribe(subscriber) {
+      this.subscribers.push(subscriber);
+    }
+  
+    unsubscribe(subscriber) {
+      this.subscribers = this.subscribers.filter(sub => sub !== subscriber);
+    }
+  
+    notify(eventType, payload) {
+      this.subscribers.forEach(subscriber => {
+        // Make HTTP POST request to subscriber's webhook endpoint
+        // Example: axios.post(subscriber.webhookURL, { eventType, payload });
+      });
+    }
+  }
+  
+  module.exports = new WebhookService();
+  
