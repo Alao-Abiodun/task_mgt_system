@@ -5,6 +5,8 @@ import tryCatch from '../utils/helpers/tryCatch.helper';
 import AppError from '../utils/lib/appError';
 import * as taskRepository from '../repositories/task.controller';
 import produceMessage from '../producers/index';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const addTask = tryCatch(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +17,7 @@ export const addTask = tryCatch(
         };
         const task = await taskRepository.create(taskDetails);
         // publish message
-        await produceMessage(task, 'task');
+        await produceMessage(JSON.stringify(task), process.env.QUEUE_NAME);
         return successResponse(
             res,
             'Task created successfully',

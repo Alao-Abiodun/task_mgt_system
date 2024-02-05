@@ -18,29 +18,29 @@ export const webhook = tryCatch(
 );
 
 
-// services/webhookService.js
-class WebhookService {
-    protected subscribers: any[];
+// // services/webhookService.js
+// class WebhookService {
+//     protected subscribers: any[];
     
-    constructor() {
-      this.subscribers = [];
-    }
+//     constructor() {
+//       this.subscribers = [];
+//     }
   
-    subscribe(subscriber) {
-      this.subscribers.push(subscriber);
-    }
+//     subscribe(subscriber) {
+//       this.subscribers.push(subscriber);
+//     }
   
-    unsubscribe(subscriber) {
-      this.subscribers = this.subscribers.filter(sub => sub !== subscriber);
-    }
+//     unsubscribe(subscriber) {
+//       this.subscribers = this.subscribers.filter(sub => sub !== subscriber);
+//     }
   
-    notify(eventType, payload) {
-      this.subscribers.forEach(subscriber => {
-        // Make HTTP POST request to subscriber's webhook endpoint
-        // Example: axios.post(subscriber.webhookURL, { eventType, payload });
-      });
-    }
-  }
+//     notify(eventType, payload) {
+//       this.subscribers.forEach(subscriber => {
+//         // Make HTTP POST request to subscriber's webhook endpoint
+//         // Example: axios.post(subscriber.webhookURL, { eventType, payload });
+//       });
+//     }
+//   }
   
-  module.exports = new WebhookService();
+//   module.exports = new WebhookService();
   
