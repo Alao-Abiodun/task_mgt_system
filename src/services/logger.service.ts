@@ -1,36 +1,66 @@
-// import winston, { LoggerOptions } from 'winston';
-// import { Axiom, ClientOptions } from '@axiomhq/js';
+import winston from 'winston';
 
-// // Define a new type that extends ClientOptions to include 'dataset'
-// interface AxiomTransportOptions extends ClientOptions {
-//     dataset: string;
-// }
+const logLevels = {
+    fatal: 0,
+    crit: 1,
+    warn: 2,
+    info: 3,
+    debug: 4,
+    trace: 5
+}
 
-// // Function to create the Axiom transport
-// const createAxiomTransport = (dataset: string, token: string) =>
-//     new Axiom({ dataset, token } as AxiomTransportOptions);
+// set default log level. Logs with log level below this won't be printed (as per logLevels defined above)
+const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
-// // Axiom transport instance
-// const axiomTransport = createAxiomTransport(process.env.AXIOM_DATASET || '', process.env.AXIOM_TOKEN || '');
+const customColors = {
+    trace: 'white',
+    debug: 'green',
+    info: 'green',
+    warn: 'yellow',
+    crit: 'blue',
+    fatal: 'red'
+};
 
-// // Logger configuration
-// const loggerConfig: LoggerOptions = {
-//     level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-//     format:
-//         process.env.NODE_ENV === 'production'
-//             ? winston.format.json()
-//             : winston.format.combine(
-//                   winston.format.colorize(),
-//                   winston.format.simple()
-//               ),
-//     defaultMeta: { service: process.env.SERVICE_NAME },
-//     transports:
-//         process.env.NODE_ENV === 'production'
-//             ? [axiomTransport as any] // Use type assertion to match the expected type
-//             : [new winston.transports.Console()],
+
+
+const logger = winston.createLogger({
+    level: LOG_LEVEL,
+    levels: logLevels,
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.prettyPrint(),
+        winston.format.timestamp({
+        format: 'DD-MM-YYYY hh:mm:ss A'
+      }),
+      winston.format.printf(nfo => {
+        return `${nfo.timestamp} - ${nfo.level}: ${nfo.message}`
+      })
+    ),
+    transports: [
+      new winston.transports.Console()
+    ]
+  })
+
+winston.addColors(customColors);
+
+// logger.stream = {
+//     write: (message, encoding) => {
+//         logger.info(message);
+//     }
 // };
 
-// // Create the logger
-// const logger = winston.createLogger(loggerConfig);
+// // Extend logger object to properly log 'Error' types
+// var origLog = logger.log;
 
-// export default logger;
+// logger.log = function (level, msg) {
+//   var objType = Object.prototype.toString.call(msg);
+//   if (objType === '[object Error]') {
+//     origLog.call(logger, level, msg.toString());
+//   } else {
+//     origLog.call(logger, level, msg);
+//   }
+// };
+
+module.exports = {
+    logger: logger
+}
