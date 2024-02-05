@@ -5,18 +5,11 @@ async function consumeMessage(queueName: string) {
 
     try {
         await rabbitMQService.connect();
-        await rabbitMQService.consumeMessages(
-            queueName,
-            (message: string, acknowledge: () => void) => {
-                // Your consumer logic here
-                console.log('Processing message:', message);
-                // Simulate processing time
-                setTimeout(() => {
-                    console.log('Processing complete');
-                    acknowledge(); // Acknowledge the message when processing is complete
-                }, 1000);
-            }
-        );
+
+        await Promise.all([
+            rabbitMQService.createQueue(queueName),
+            await rabbitMQService.consumeMessages(queueName),
+        ]);
     } finally {
         await rabbitMQService.closeConnection();
     }

@@ -63,7 +63,7 @@ export const updateTask = tryCatch(
         };
         await taskRepository.update(id, updatedTask);
         // publish message
-        await produceMessage(updatedTask, 'task');
+        await produceMessage(updatedTask, process.env.QUEUE_NAME);
         return successResponse(res, 'Task updated successfully');
     }
 );
@@ -77,7 +77,7 @@ export const deleteTask = tryCatch(
         }
         await taskRepository.remove(id);
         // publish message
-        await produceMessage({ id }, 'task');
+        await produceMessage({ task }, process.env.QUEUE_NAME);
         return successResponse(res, 'Task deleted successfully');
     }
 );
