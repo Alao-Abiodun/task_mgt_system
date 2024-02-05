@@ -8,6 +8,8 @@ import mongoose from 'mongoose';
 try {
     // authenticate db
     // connect db
+    console.clear();
+
     const db = await mongoose.connect(
         String(`${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}`)
     );

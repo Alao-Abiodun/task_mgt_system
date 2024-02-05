@@ -22,10 +22,9 @@ export default class RabbitMQService implements IRabbitMQService {
     protected channel: any;
 
     constructor() {
-        this.connection;
-        this.channel;
+        this.connection = null;
+        this.channel = null;
     }
-
     async connect() {
         try {
             this.connection = await amqp.connect(
@@ -40,8 +39,14 @@ export default class RabbitMQService implements IRabbitMQService {
 
     async createQueue(queueName, options = { durable: true }) {
         try {
-            await this.channel.assertQueue(queueName, options);
-            console.log(`Queue '${queueName}' created`);
+            if (this.channel) {
+                await this.channel.assertQueue(queueName, options);
+                console.log(`Queue '${queueName}' created`);
+            } else {
+                console.error(
+                    'Channel is null. Ensure connection is established.'
+                );
+            }
         } catch (error) {
             console.error(`Error creating queue '${queueName}':`, error);
             throw error;
@@ -50,12 +55,18 @@ export default class RabbitMQService implements IRabbitMQService {
 
     async sendMessage(queueName, message, options = { persistent: true }) {
         try {
-            await this.channel.sendToQueue(
-                queueName,
-                Buffer.from(message),
-                options
-            );
-            console.log(`Message sent to queue '${queueName}': ${message}`);
+            if (this.channel) {
+                await this.channel.sendToQueue(
+                    queueName,
+                    Buffer.from(message),
+                    options
+                );
+                console.log(`Message sent to queue '${queueName}': ${message}`);
+            } else {
+                console.error(
+                    'Channel is null. Ensure connection is established.'
+                );
+            }
         } catch (error) {
             console.error(
                 `Error sending message to queue '${queueName}':`,
@@ -65,8 +76,14 @@ export default class RabbitMQService implements IRabbitMQService {
         }
     }
 
-    async consumeMessages(queueName, onMessageCallback) {
+    async consumeMessages(queueName) {
         try {
+            if (!this.channel) {
+                console.error(
+                    'Channel is null. Ensure connection is established.'
+                );
+                return;
+            }
             await this.channel.assertQueue(queueName, { durable: true });
             this.channel.prefetch(1);
 
@@ -79,11 +96,7 @@ export default class RabbitMQService implements IRabbitMQService {
                     console.log(
                         `Received message from queue '${queueName}': ${message}`
                     );
-
-                    onMessageCallback(message, () => {
-                        // Acknowledge the message when processing is complete
-                        this.channel.ack(msg);
-                    });
+                    this.channel.ack(msg);
                 },
                 { noAck: false }
             );

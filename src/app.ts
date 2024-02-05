@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // mount routes
-app.use('/api/v1/task', routes);
+app.use('/api/v1', routes);
 
 // index route
 app.get('/task', (req: Request, res: Response) => {
