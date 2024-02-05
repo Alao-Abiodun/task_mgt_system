@@ -6,8 +6,8 @@ const logLevels = {
     warn: 2,
     info: 3,
     debug: 4,
-    trace: 5
-}
+    trace: 5,
+};
 
 // set default log level. Logs with log level below this won't be printed (as per logLevels defined above)
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
@@ -18,10 +18,8 @@ const customColors = {
     info: 'green',
     warn: 'yellow',
     crit: 'blue',
-    fatal: 'red'
+    fatal: 'red',
 };
-
-
 
 const logger = winston.createLogger({
     level: LOG_LEVEL,
@@ -30,16 +28,14 @@ const logger = winston.createLogger({
         winston.format.colorize(),
         winston.format.prettyPrint(),
         winston.format.timestamp({
-        format: 'DD-MM-YYYY hh:mm:ss A'
-      }),
-      winston.format.printf(nfo => {
-        return `${nfo.timestamp} - ${nfo.level}: ${nfo.message}`
-      })
+            format: 'DD-MM-YYYY hh:mm:ss A',
+        }),
+        winston.format.printf((nfo) => {
+            return `${nfo.timestamp} - ${nfo.level}: ${nfo.message}`;
+        })
     ),
-    transports: [
-      new winston.transports.Console()
-    ]
-  })
+    transports: [new winston.transports.Console()],
+});
 
 winston.addColors(customColors);
 
@@ -62,5 +58,5 @@ winston.addColors(customColors);
 // };
 
 module.exports = {
-    logger: logger
-}
+    logger: logger,
+};

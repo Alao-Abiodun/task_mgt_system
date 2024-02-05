@@ -10,9 +10,9 @@ import { addTaskValidator } from '../middlewares/validations/task.validation';
 import { userAuth } from '../middlewares/authorizations/user.authorization';
 
 export default (router: Router) => {
-    router.post('/', userAuth, addTaskValidator, addTask);
-    router.get('/', getTask);
-    router.get('/:id', getSingleTask);
-    router.put('/:id', userAuth, updateTask);
-    router.delete('/:id', userAuth, deleteTask);
+    router.post('/task', addTaskValidator, addTask);
+    router.get('/task', getTask);
+    router.get('/task/:id', getSingleTask);
+    router.put('/task/:id', userAuth, updateTask);
+    router.delete('/task/:id', userAuth, deleteTask);
 };

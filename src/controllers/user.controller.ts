@@ -34,7 +34,7 @@ export const signUp = tryCatch(
 export const login = tryCatch(
     async (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body;
-        const user = await userRepository.findOne(email);
+        const user = await userRepository.findOne({ email });
         if (!user) {
             throw new AppError('User not found', StatusCodes.NOT_FOUND);
         }
