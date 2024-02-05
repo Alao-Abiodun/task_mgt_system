@@ -1,4 +1,4 @@
-### Project
+# Task Managment System
 Task Managment System (TMS) is a web application that allows users to manage their tasks. The application is built using the NodeJS framework and uses the ExpressJS framework for routing. The application uses the MongoDB database to store the tasks and users. 
 
 ## How to install from source
@@ -10,3 +10,5 @@ Task Managment System (TMS) is a web application that allows users to manage the
 - Run development server `pnpm dev`
 - Run test suite `pnpm test`
 - Run production server `pnpm start`
+
+ 

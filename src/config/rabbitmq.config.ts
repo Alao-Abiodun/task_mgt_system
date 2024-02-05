@@ -22,8 +22,8 @@ export default class RabbitMQService implements IRabbitMQService {
     protected channel: any;
 
     constructor() {
-        this.connection = null;
-        this.channel = null;
+        this.connection;
+        this.channel;
     }
 
     async connect() {
@@ -32,7 +32,6 @@ export default class RabbitMQService implements IRabbitMQService {
                 String(process.env.RABBITMQ_URL)
             );
             this.channel = await this.connection.createChannel();
-            console.log('Connected to RabbitMQ');
         } catch (error) {
             console.error('Error connecting to RabbitMQ:', error);
             throw error;
