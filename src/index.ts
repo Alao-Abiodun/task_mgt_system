@@ -1,8 +1,7 @@
-import 'dotenv/config'; // load env variables
-// import dotenv from 'dotenv';
-// dotenv.config();
+import dotenv from 'dotenv';
+dotenv.config();
 import app from './app';
-// import logger from './services/logger.service';
+import logger from './services/logger.service';
 import mongoose from 'mongoose';
 
 try {
@@ -16,15 +15,15 @@ try {
 
     if (db) console.log('Connected to Database');
     mongoose.connection.on('error', (err) => {
-        // logger.error(`Error connecting to DB: ${err}`);
+        logger.error(`Error connecting to DB: ${err}`);
         console.error(`Error connecting to DB: ${err}`);
     });
     mongoose.connection.on('disconnected', () => {
-        // logger.error('Mongoose connection closed');
+        logger.error('Mongoose connection closed');
         console.log('Mongoose connection closed');
     });
 
-    // logger.info('Connection has been established successfully.');
+    logger.info('Connection has been established successfully.');
 
     // set app port
     const port = Number(process.env.PORT) || 7001;
@@ -33,9 +32,9 @@ try {
         console.log(
             `🚀  Task Management service is ready at: http://localhost:${port}`
         );
-        // logger.info(
-        //     `🚀  Patient service is ready at: http://localhost:${port}`
-        // );
+        logger.info(
+            `🚀  Patient service is ready at: http://localhost:${port}`
+        );
     });
 } catch (err) {
     // logger.error(err);
@@ -49,12 +48,12 @@ process.on('SIGINT', async () => {
 
 process.on('unhandledRejection', async (error) => {
     await mongoose.connection.close();
-    // logger.error(error);
+    logger.error(error);
     process.exit(1); //server needs to crash and a process manager will restart it
 });
 
 process.on('uncaughtException', async (error) => {
     await mongoose.connection.close();
-    // logger.error(error);
+    logger.error(error);
     process.exit(1); //server needs to crash and a process manager will restart it
 });

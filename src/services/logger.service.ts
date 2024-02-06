@@ -57,6 +57,4 @@ winston.addColors(customColors);
 //   }
 // };
 
-module.exports = {
-    logger: logger,
-};
+export default logger;
