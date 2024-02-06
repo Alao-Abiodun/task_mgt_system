@@ -16,7 +16,6 @@ export const addTask = tryCatch(
             description,
         };
         const task = await taskRepository.create(taskDetails);
-        // publish message
         await produceMessage(JSON.stringify(task), process.env.QUEUE_NAME);
         return successResponse(
             res,
@@ -62,7 +61,6 @@ export const updateTask = tryCatch(
             description,
         };
         await taskRepository.update(id, updatedTask);
-        // publish message
         await produceMessage(updatedTask, process.env.QUEUE_NAME);
         return successResponse(res, 'Task updated successfully');
     }
@@ -76,7 +74,6 @@ export const deleteTask = tryCatch(
             throw new AppError('Task not found', StatusCodes.NOT_FOUND);
         }
         await taskRepository.remove(id);
-        // publish message
         await produceMessage({ task }, process.env.QUEUE_NAME);
         return successResponse(res, 'Task deleted successfully');
     }
