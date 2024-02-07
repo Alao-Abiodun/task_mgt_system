@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config'; // load env variables
 import app from './app';
 import logger from './services/logger.service';
 import mongoose from 'mongoose';
@@ -7,7 +6,6 @@ import mongoose from 'mongoose';
 try {
     // authenticate db
     // connect db
-    console.clear();
 
     const db = await mongoose.connect(
         String(`${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}`)
@@ -27,13 +25,11 @@ try {
 
     // set app port
     const port = Number(process.env.PORT) || 7001;
+
     // spin off the server
     app.listen(port, () => {
         console.log(
             `🚀  Task Management service is ready at: http://localhost:${port}`
-        );
-        logger.info(
-            `🚀  Patient service is ready at: http://localhost:${port}`
         );
     });
 } catch (err) {
