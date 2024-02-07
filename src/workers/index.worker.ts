@@ -1,5 +1,5 @@
 import 'dotenv/config'; // load env variables
-import RabbitMQService from './rabbitmq.config';
+import RabbitMQService from '../config/rabbitmq.config';
 import mongoose from 'mongoose';
 
 const rabbitMQService = new RabbitMQService();
@@ -11,8 +11,9 @@ if (db) console.log('Connected to Database');
 
 rabbitMQService
     .connect()
-    .then(() => {
+    .then(async () => {
         console.log('Connected to RabbitMQ');
+        await rabbitMQService.consumeMessages(process.env.QUEUE_NAME);
     })
     .catch((error) => {
         console.error('Error connecting to RabbitMQ:', error);

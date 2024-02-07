@@ -5,12 +5,7 @@ import cors from 'cors';
 import { errorResponse, successResponse } from './utils/lib/response';
 import { StatusCodes } from 'http-status-codes';
 import AppError from './utils/lib/appError';
-import logger from './services/logger.service';
-
 const app: Application = express();
-
-// get routes
-import routes from './routes/index.route';
 
 // set global variables
 app.set('trust proxy', true);
@@ -23,6 +18,10 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// get routes
+import routes from './routes/index.route';
+import logger from './services/logger.service';
 
 // mount routes
 app.use('/api/v1', routes);

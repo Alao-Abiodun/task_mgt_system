@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import tryCatch from '../utils/helpers/tryCatch.helper';
 import AppError from '../utils/lib/appError';
 import * as taskRepository from '../repositories/task.controller';
-import produceMessage from '../producers/index';
+import produceMessage from '../workers/producer.worker';
 import dotenv from 'dotenv';
 dotenv.config();
 
