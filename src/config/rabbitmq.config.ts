@@ -1,14 +1,16 @@
 import amqp from 'amqplib';
 import dotenv from 'dotenv';
 dotenv.config();
+import axios from 'axios';
 import logger from '../services/logger.service';
+import webhookModel from '../models/webhook.model';
 
 interface IRabbitMQService {
     connect(): Promise<void>;
     createQueue(queueName: string, options?: any): Promise<void>;
     sendMessage(
         queueName: string,
-        message: string,
+
         options?: any
     ): Promise<void>;
     consumeMessages(
@@ -46,7 +48,9 @@ export default class RabbitMQService implements IRabbitMQService {
                 console.log(`Queue '${queueName}' created`);
                 logger.info(`Queue '${queueName}' created`);
             } else {
-                logger.error('Channel is null. Ensure connection is established.');
+                logger.error(
+                    'Channel is null. Ensure connection is established.'
+                );
                 console.error(
                     'Channel is null. Ensure connection is established.'
                 );
@@ -69,7 +73,9 @@ export default class RabbitMQService implements IRabbitMQService {
                 logger.info(`Message sent to queue '${queueName}': ${message}`);
                 console.log(`Message sent to queue '${queueName}': ${message}`);
             } else {
-                logger.error('Channel is null. Ensure connection is established.');
+                logger.error(
+                    'Channel is null. Ensure connection is established.'
+                );
                 console.error(
                     'Channel is null. Ensure connection is established.'
                 );
@@ -90,7 +96,9 @@ export default class RabbitMQService implements IRabbitMQService {
     async consumeMessages(queueName) {
         try {
             if (!this.channel) {
-                logger.error('Channel is null. Ensure connection is established.');
+                logger.error(
+                    'Channel is null. Ensure connection is established.'
+                );
                 console.error(
                     'Channel is null. Ensure connection is established.'
                 );
@@ -100,15 +108,32 @@ export default class RabbitMQService implements IRabbitMQService {
             this.channel.prefetch(1);
 
             logger.info(`Consuming messages from queue '${queueName}'`);
-            console.log(`Consuming messages from queue '${queueName}'`);
+            // console.log(`Consuming messages from queue '${queueName}'`);
 
             this.channel.consume(
                 queueName,
-                (msg) => {
+                async (msg) => {
                     const message = msg.content.toString();
                     console.log(
                         `Received message from queue '${queueName}': ${message}`
                     );
+
+                    const urls: any = await webhookModel.find({});
+
+                    console.log(urls);
+
+                    const reqBody = {
+                        message,
+                        action: 'Created',
+                    };
+
+                    for (const url of urls) {
+                        await axios.post(url, reqBody, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                    }
                     logger.info(
                         `Received message from queue '${queueName}': ${message}`
                     );

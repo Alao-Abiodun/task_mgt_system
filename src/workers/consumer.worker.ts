@@ -1,4 +1,5 @@
 import RabbitMQService from '../config/rabbitmq.config';
+import logger from '../services/logger.service';
 
 async function consumeMessage(queueName: string) {
     const rabbitMQService = new RabbitMQService();
