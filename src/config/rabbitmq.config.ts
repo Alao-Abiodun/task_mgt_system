@@ -8,19 +8,12 @@ import webhookModel from '../models/webhook.model';
 interface IRabbitMQService {
     connect(): Promise<void>;
     createQueue(queueName: string, options?: any): Promise<void>;
-    sendMessage(
-        queueName: string,
-
-        options?: any
-    ): Promise<void>;
-    consumeMessages(
-        queueName: string,
-        onMessageCallback: (message: string, done: () => void) => void
-    ): Promise<void>;
+    sendMessage(queueName: string, options?: any): Promise<void>;
+    consumeMessages(queueName: string): boolean;
     closeConnection(): Promise<void>;
 }
 
-export default class RabbitMQService implements IRabbitMQService {
+export default class RabbitMQService {
     protected connection: any;
     protected channel: any;
 
@@ -120,8 +113,6 @@ export default class RabbitMQService implements IRabbitMQService {
 
                     const urls: any = await webhookModel.find({});
 
-                    console.log(urls);
-
                     const reqBody = {
                         message,
                         action: 'Created',
@@ -141,6 +132,8 @@ export default class RabbitMQService implements IRabbitMQService {
                 },
                 { noAck: false }
             );
+
+            return true;
         } catch (error) {
             logger.error(
                 `Error consuming messages from queue '${queueName}':`,
