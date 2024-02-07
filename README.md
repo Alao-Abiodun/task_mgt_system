@@ -1,5 +1,4 @@
 # Task Managment System
-Task Managment System (TMS) is a web application that allows users to manage their tasks. The application is built using the NodeJS framework and uses the ExpressJS framework for routing. The application uses the MongoDB database to store the tasks and users and implement AMQP protocol using RabbitMQ for message queueing. This application is built using the modular architecture and uses the MVC pattern.
 
 ## How to install from source
 - Clone the repository - `git clone repo-link`
@@ -10,6 +9,19 @@ Task Managment System (TMS) is a web application that allows users to manage the
 - Run development server `pnpm dev`
 - Run test suite `pnpm test`
 - Run production server `pnpm start`
+
+# Table of Contents
+- [System Architecture and Flow](#system-architecture-and-flow)
+- [API](#api)
+<br>
+
+## System Architecture and Flow
+<br>
+
+![Task Management System Architecture](docs/image.png)
+<br><br>
+Task Managment System (TMS) is a web application that allows users to manage their tasks. The application is built using the NodeJS framework and uses the ExpressJS framework for routing. The application uses the MongoDB database to store the tasks and users and implement AMQP protocol using RabbitMQ for message queueing. This application is built using the modular architecture and uses the MVC pattern.
+
 
 Here is a the postman documentation for the API: [Postman Documentation](https://documenter.getpostman.com/view/24407924/2s9Yyweema)
 
@@ -27,7 +39,7 @@ Here is a the postman documentation for the API: [Postman Documentation](https:/
 - Pnpm
 
 
-## API Endpoints
+## API
 The API has the following endpoints:  
 
 ### Webhook Eendpoints
