@@ -5,14 +5,6 @@ import axios from 'axios';
 import logger from '../services/logger.service';
 import webhookModel from '../models/webhook.model';
 
-interface IRabbitMQService {
-    connect(): Promise<void>;
-    createQueue(queueName: string, options?: any): Promise<void>;
-    sendMessage(queueName: string, options?: any): Promise<void>;
-    consumeMessages(queueName: string): boolean;
-    closeConnection(): Promise<void>;
-}
-
 export default class RabbitMQService {
     protected connection: any;
     protected channel: any;
@@ -86,7 +78,7 @@ export default class RabbitMQService {
         }
     }
 
-    async consumeMessages(queueName) {
+    async consumeMessages(queueName, action?: string) {
         try {
             if (!this.channel) {
                 logger.error(
@@ -113,9 +105,11 @@ export default class RabbitMQService {
 
                     const urls: any = await webhookModel.find({});
 
+                    // return;
+
                     const reqBody = {
                         message,
-                        action: 'Created',
+                        action: action,
                     };
 
                     for (const url of urls) {
