@@ -7,6 +7,7 @@ import * as userRepository from '../repositories/user.repository';
 import { comparePassword, hashPassword } from '../utils/helpers/bcrypt.helper';
 import { generateJwtToken } from '../utils/helpers/jwt.helper';
 import { removePasswordFromObject } from '../utils/helpers/user.helper';
+import consumeMessage from '../workers/consumer.worker';
 
 export const signUp = tryCatch(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -20,6 +21,7 @@ export const signUp = tryCatch(
             email,
             password: hashedPassword,
         };
+
         await userRepository.create(user);
 
         return successResponse(
@@ -49,6 +51,8 @@ export const login = tryCatch(
         }
 
         const token = generateJwtToken({ email: user.email }, '1h');
+
+        await consumeMessage(process.env.QUEUE_NAME, 'A new task has been created');
 
         return successResponse(res, 'User logged in successfully', {
             data: { user: removePasswordFromObject(user) },
